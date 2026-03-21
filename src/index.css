@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-[#483D8B] selection:bg-indigo-100/50;
+    background-image: url('https://i.pinimg.com/736x/4b/49/68/4b4968fb02961aa57e46bbd2e6dc7907.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-[20px] border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)];
+  }
+
+  .chrome-border {
+    @apply border border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)];
+  }
+
+  .holographic-btn {
+    @apply relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/30 transition-all duration-500 text-[#483D8B];
+  }
+
+  .holographic-btn::after {
+    content: '';
+    @apply absolute top-0 -left-full w-full h-full bg-linear-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg] transition-all duration-700;
+  }
+
+  .holographic-btn:hover::after {
+    @apply left-full;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .mask-fade-edges {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .mask-fade-right {
+    mask-image: linear-gradient(to right, black 70%, transparent);
+  }
+}
+
+@keyframes holographic-shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.holographic-text {
+  background: linear-gradient(
+    90deg,
+    #483D8B,
+    #4B0082,
+    #6A5ACD,
+    #4B0082,
+    #483D8B
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holographic-shine 4s ease infinite;
+  display: inline-block;
+  text-shadow: 0 0 8px rgba(72, 61, 139, 0.15);
+}
