@@ -149,18 +149,22 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
       const searchLower = searchQuery.toLowerCase().trim();
+      const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
       
+      if (!searchLower) return matchesCategory;
+
       // If search starts with H and is followed by numbers, prioritize Set ID
       const isOutfitSearch = /^h\d+$/i.test(searchLower);
       
       if (isOutfitSearch) {
-        return product.setIds.some(id => id.toLowerCase() === searchLower);
+        const matchesSet = product.setIds.some(id => id.toLowerCase() === searchLower);
+        return matchesSet && matchesCategory;
       }
 
       const matchesSearch = product.name.toLowerCase().includes(searchLower) || 
                             product.id.toLowerCase().includes(searchLower) ||
                             product.setIds.some(id => id.toLowerCase().includes(searchLower));
-      const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+      
       return matchesSearch && matchesCategory;
     });
   }, [products, searchQuery, selectedCategory]);
