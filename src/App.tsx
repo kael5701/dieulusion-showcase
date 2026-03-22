@@ -147,25 +147,25 @@ export default function App() {
   };
 
   const filteredProducts = useMemo(() => {
+    const normalize = (str: string) => 
+      str.toLowerCase()
+         .normalize('NFD')
+         .replace(/[\u0300-\u036f]/g, '')
+         .replace(/đ/g, 'd')
+         .trim();
+
+    const q = normalize(searchQuery);
+    const keywords = q.split(/\s+/).filter(k => k.length > 0);
+
     return products.filter(product => {
-      const searchLower = searchQuery.toLowerCase().trim();
       const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
       
-      if (!searchLower) return matchesCategory;
+      if (!q) return matchesCategory;
 
-      // If search starts with H and is followed by numbers, prioritize Set ID
-      const isOutfitSearch = /^h\d+$/i.test(searchLower);
+      const target = normalize(`${product.name} ${product.category} ${product.setIds.join(' ')}`);
+      const searchMatch = keywords.every(kw => target.includes(kw));
       
-      if (isOutfitSearch) {
-        const matchesSet = product.setIds.some(id => id.toLowerCase() === searchLower);
-        return matchesSet && matchesCategory;
-      }
-
-      const matchesSearch = product.name.toLowerCase().includes(searchLower) || 
-                            product.id.toLowerCase().includes(searchLower) ||
-                            product.setIds.some(id => id.toLowerCase().includes(searchLower));
-      
-      return matchesSearch && matchesCategory;
+      return matchesCategory && searchMatch;
     });
   }, [products, searchQuery, selectedCategory]);
 
@@ -239,7 +239,7 @@ export default function App() {
       </section>
 
       {/* Section 3: Shopping Hub (Sticky) */}
-      <section className="sticky top-0 z-50 py-4 mb-8 bg-white/10 backdrop-blur-xl border-b border-white/20 -mx-4 px-4 md:-mx-8 md:px-8">
+      <section className="sticky top-0 z-50 py-4 mb-8 bg-white/20 backdrop-blur-2xl border-b border-white/20 -mx-4 px-4 md:-mx-8 md:px-8 shadow-sm will-change-transform">
         <div className="max-w-4xl mx-auto">
           <div className="mb-4 text-center">
             <div className="relative max-w-lg mx-auto group">
@@ -318,7 +318,7 @@ export default function App() {
       </section>
 
       {/* Section 4: Catalog Sản phẩm */}
-      <main className="max-w-7xl mx-auto min-h-[60vh] pb-20">
+      <main className="max-w-7xl mx-auto min-h-[60vh] pb-20 pt-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, i) => (
@@ -400,7 +400,7 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-10 glass-card rounded-[30px] border border-white/30 max-w-md mx-auto px-6 mt-4"
+            className="text-center py-16 glass-card rounded-[30px] border border-white/30 max-w-md mx-auto px-6 mt-12 scroll-mt-60"
           >
             <p className="text-[#483D8B]/60 italic font-medium mb-6">Không tìm thấy sản phẩm nào phù hợp...</p>
             <button 
