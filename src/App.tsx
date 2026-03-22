@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ShoppingBag, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Product Interface
@@ -238,70 +238,82 @@ export default function App() {
         </motion.p>
       </section>
 
-      {/* Section 3: Shopping Hub */}
-      <section className="max-w-4xl mx-auto mb-12">
-        <div className="mb-6 text-center">
-          <div className="relative max-w-lg mx-auto">
-            <input 
-              type="text"
-              placeholder="mã CODE theo CAPTION hoặc TÊN sản phẩm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 rounded-full glass-card border-white/40 focus:outline-none focus:border-purple-300 transition-all placeholder:text-[#483D8B]/40 text-[#483D8B] font-medium text-xs sm:text-sm text-center"
-            />
-          </div>
-        </div>
-
-        {/* Category Navigator */}
-        <div className="relative group">
-          <AnimatePresence>
-            {showLeftArrow && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => scroll('left')}
-                className="absolute left-0 top-[18px] -translate-y-1/2 z-20 text-[#483D8B] hover:scale-110 transition-all bg-white/95 shadow-lg rounded-full p-2 border border-white/50 cursor-pointer"
-              >
-                <ChevronLeft size={24} />
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          <div 
-            ref={scrollRef}
-            className="flex overflow-x-auto gap-3 pb-4 hide-scrollbar scroll-smooth"
-          >
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(selectedCategory === cat ? 'All' : cat)}
-                className={`px-6 py-2 rounded-full whitespace-nowrap text-sm transition-all duration-300 ${
-                  selectedCategory === cat 
-                  ? 'bg-white/40 border-white/80 shadow-lg font-bold' 
-                  : 'bg-white/5 border-white/10 hover:bg-white/10 font-medium'
-                } border backdrop-blur-md`}
-              >
-                <span className={selectedCategory === cat ? 'holographic-text' : ''}>
-                  {cat}
-                </span>
-              </button>
-            ))}
+      {/* Section 3: Shopping Hub (Sticky) */}
+      <section className="sticky top-0 z-50 py-4 mb-8 bg-white/10 backdrop-blur-xl border-b border-white/20 -mx-4 px-4 md:-mx-8 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-4 text-center">
+            <div className="relative max-w-lg mx-auto group">
+              <input 
+                type="text"
+                placeholder="mã CODE theo CAPTION hoặc TÊN sản phẩm"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-10 py-3 rounded-full glass-card border-white/40 focus:outline-none focus:border-purple-300 transition-all placeholder:text-[#483D8B]/40 text-[#483D8B] font-medium text-xs sm:text-sm text-center"
+              />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#483D8B]/40" />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/20 rounded-full transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4 text-[#483D8B]/60" />
+                </button>
+              )}
+            </div>
           </div>
 
-          <AnimatePresence>
-            {showRightArrow && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => scroll('right')}
-                className="absolute right-0 top-[18px] -translate-y-1/2 z-20 text-[#483D8B] hover:scale-110 transition-all bg-white/95 shadow-lg rounded-full p-2 border border-white/50 cursor-pointer"
-              >
-                <ChevronRight size={24} />
-              </motion.button>
-            )}
-          </AnimatePresence>
+          {/* Category Navigator */}
+          <div className="relative group">
+            <AnimatePresence>
+              {showLeftArrow && (
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => scroll('left')}
+                  className="absolute left-0 top-[18px] -translate-y-1/2 z-20 text-[#483D8B] hover:scale-110 transition-all bg-white/95 shadow-lg rounded-full p-2 border border-white/50 cursor-pointer"
+                >
+                  <ChevronLeft size={24} />
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            <div 
+              ref={scrollRef}
+              className="flex overflow-x-auto gap-3 pb-2 hide-scrollbar scroll-smooth"
+            >
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(selectedCategory === cat ? 'All' : cat)}
+                  className={`px-6 py-2 rounded-full whitespace-nowrap text-sm transition-all duration-300 ${
+                    selectedCategory === cat 
+                    ? 'bg-white/40 border-white/80 shadow-lg font-bold' 
+                    : 'bg-white/5 border-white/10 hover:bg-white/10 font-medium'
+                  } border backdrop-blur-md`}
+                >
+                  <span className={selectedCategory === cat ? 'holographic-text' : ''}>
+                    {cat}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <AnimatePresence>
+              {showRightArrow && (
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => scroll('right')}
+                  className="absolute right-0 top-[18px] -translate-y-1/2 z-20 text-[#483D8B] hover:scale-110 transition-all bg-white/95 shadow-lg rounded-full p-2 border border-white/50 cursor-pointer"
+                >
+                  <ChevronRight size={24} />
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 
@@ -385,9 +397,25 @@ export default function App() {
         </div>
         
         {filteredProducts.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-[#483D8B]/60 italic font-medium">Không tìm thấy sản phẩm nào phù hợp...</p>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-24 glass-card rounded-[40px] border border-white/30 max-w-2xl mx-auto px-6"
+          >
+            <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
+              <Search className="w-8 h-8 text-[#483D8B]/40" />
+            </div>
+            <h2 className="text-[#483D8B] font-bold text-xl mb-2">Không tìm thấy sản phẩm</h2>
+            <p className="text-[#483D8B]/60 text-sm mb-8">
+              Có vẻ như không có món nào phù hợp với tìm kiếm của bạn trong danh mục này.
+            </p>
+            <button 
+              onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+              className="px-8 py-3 bg-[#483D8B] text-white rounded-full text-xs font-bold hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest"
+            >
+              Xem tất cả sản phẩm
+            </button>
+          </motion.div>
         )}
       </main>
 
