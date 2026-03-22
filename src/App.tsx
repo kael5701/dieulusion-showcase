@@ -318,7 +318,7 @@ export default function App() {
       </section>
 
       {/* Section 4: Catalog Sản phẩm */}
-      <main className="max-w-7xl mx-auto">
+      <main className="max-w-7xl mx-auto min-h-[60vh] pb-20">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, i) => (
