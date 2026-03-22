@@ -398,20 +398,14 @@ export default function App() {
         
         {filteredProducts.length === 0 && (
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-24 glass-card rounded-[40px] border border-white/30 max-w-2xl mx-auto px-6"
+            className="text-center py-10 glass-card rounded-[30px] border border-white/30 max-w-md mx-auto px-6 mt-4"
           >
-            <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
-              <Search className="w-8 h-8 text-[#483D8B]/40" />
-            </div>
-            <h2 className="text-[#483D8B] font-bold text-xl mb-2">Không tìm thấy sản phẩm</h2>
-            <p className="text-[#483D8B]/60 text-sm mb-8">
-              Có vẻ như không có món nào phù hợp với tìm kiếm của bạn trong danh mục này.
-            </p>
+            <p className="text-[#483D8B]/60 italic font-medium mb-6">Không tìm thấy sản phẩm nào phù hợp...</p>
             <button 
               onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-              className="px-8 py-3 bg-[#483D8B] text-white rounded-full text-xs font-bold hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest"
+              className="px-8 py-3 bg-[#483D8B] text-white rounded-full text-[10px] font-bold hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest"
             >
               Xem tất cả sản phẩm
             </button>
